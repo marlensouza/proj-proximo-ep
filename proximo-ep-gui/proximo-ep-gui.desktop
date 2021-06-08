@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Proximo-ep
+Comment=Garante a sequencia certa de episodios
+Exec=/usr/local/bin/proximo-ep-gui
+Icon=/opt/proximo-ep-gui/img/proximo-ep-gui.png
+Terminal=false
+Type=Application
+Categories=GNOME;Application;Development;
+StartupNotify=true
