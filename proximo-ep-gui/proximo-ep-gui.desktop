@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=Proximo-ep
 Comment=Garante a sequencia certa de episodios
-Exec=/usr/local/bin/proximo-ep-gui
+Exec=/opt/proximo-ep-gui/proximo-ep-gui.sh
 Icon=/opt/proximo-ep-gui/img/proximo-ep-gui.png
 Terminal=false
 Type=Application
