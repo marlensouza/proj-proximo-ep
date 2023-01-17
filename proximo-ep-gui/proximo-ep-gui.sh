@@ -30,7 +30,7 @@
 
 Gui(){
 
-	yad --form --title "Proximo-ep v0.4" --field " Diretório da série:DIR" --field " Ver quantos episódio?:NUM" --width=500 --height=80 --button=Ok --button=Cancel | tr "\|" "\n"
+	yad --form --title "Proximo-ep v0.5" --field " Diretório da série:DIR" --field " Ver quantos episódio?:NUM" --width=500 --height=80 --button=Ok --button=Cancel | tr "\|" "\n"
 
 }
 
