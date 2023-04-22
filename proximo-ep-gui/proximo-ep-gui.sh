@@ -109,6 +109,7 @@ func_main(){
 
 }
 
-while true; do
+while true
+do
 	func_main
 done
