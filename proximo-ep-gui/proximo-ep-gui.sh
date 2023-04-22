@@ -2,7 +2,7 @@
 #
 # Autor......: Marlen Souza
 # nome.......: Proximo-ep
-# versão.....: 0.5
+# versão.....: 0.6
 # descrição..: Permite assistir epsódios
 #              de séries em ordem e não se
 #              perder na sequência.
@@ -23,27 +23,18 @@
 #
 # Funções principais
 #
-# Gui()                Executa o YAD. Torna possível que a aplicação possa ter uma interface gráfica
-# func_proximo()       É o motor da aplicação. É o código responsável pelas funcionálidades da aplicação
-#
+# func_gui()          Executa o YAD. Torna possível que a aplicação possa ter uma interface gráfica
+# func_proximo()      É o motor da aplicação. É o código responsável pelas funcionálidades da aplicação
+# func_erro()         Gera pop-ups de alertas de erro
+# func_main()         Responsável por executar o script
 
 
-Gui(){
+func_gui(){
 
-	yad --form --title "Proximo-ep v0.5" --field " Diretório da série:DIR" --field " Ver quantos episódio?:NUM" --width=500 --height=80 --button=Ok --button=Cancel | tr "\|" "\n"
+	yad --form --title "Proximo-ep v0.6" --field " Diretório da série:DIR" --field " Ver quantos episódio?:NUM" --width=500 --height=80 --button=Ok --button=Cancel | tr "\|" "\n"
 
 }
 
-ENTRADA=$(Gui)
-
-PATH_FILE=$(echo "$ENTRADA" | awk 'NR == 1 { print $1 }')
-CHECA_ESPACO_PATH=$(echo "$ENTRADA" | awk 'NR == 1 { print NF }')
-
-NUMERO_EP=$(echo "$ENTRADA" | awk 'NR == 2 { print $1 }')
-
-CHECA_COUNT_FILE=$( ls "$PATH_FILE"/proximo* 2>&- )
-
-# A função "func_proximo()" é a responsável por executar a lógica principal
 func_proximo(){
 
 
@@ -69,35 +60,55 @@ func_erro(){
 
 }
 
-if [[ -z "$ENTRADA" ]]
-then
-      exit 2
+func_validacao(){
 
-elif [[ "$CHECA_ESPACO_PATH" != 1 ]]
-      then
-
-	MENSAGEM_ERRO="     Nome de diretório com espaço\!"
-
-	func_erro
-
-elif [[ -z "$CHECA_COUNT_FILE" ]]
-     then
-
-	MENSAGEM_ERRO="     Arquivo \"proximo-00\" não encontrado\!"
-
-        func_erro
-
-elif ([[ -n "$NUMERO_EP" ]] && [[ "$NUMERO_EP" -gt 0 ]])
+	if [[ -z "$ENTRADA" ]]
 	then
+	      exit 2
 
-		for i in $(seq "$NUMERO_EP")
-		do
-			func_proximo
-		done
+	elif [[ "$CHECA_ESPACO_PATH" != 1 ]]
+	      then
 
-elif [[ "$NUMERO_EP" -gt 0 ]]
-	then
+		MENSAGEM_ERRO="     Nome de diretório com espaço\!"
 
-	        func_proximo
+		func_erro
 
-fi
+	elif [[ -z "$CHECA_COUNT_FILE" ]]
+	     then
+
+		MENSAGEM_ERRO="     Arquivo \"proximo-00\" não encontrado\!"
+
+	        func_erro
+
+	elif ([[ -n "$NUMERO_EP" ]] && [[ "$NUMERO_EP" -gt 0 ]])
+		then
+
+			for i in $(seq "$NUMERO_EP")
+			do
+				func_proximo
+			done
+
+	elif [[ "$NUMERO_EP" -gt 0 ]]
+		then
+
+		        func_proximo
+
+	fi
+}
+
+
+func_main(){
+
+	ENTRADA=$(func_gui)
+	PATH_FILE=$(echo "$ENTRADA" | awk 'NR == 1 { print $1 }')
+	CHECA_ESPACO_PATH=$(echo "$ENTRADA" | awk 'NR == 1 { print NF }')
+	NUMERO_EP=$(echo "$ENTRADA" | awk 'NR == 2 { print $1 }')
+	CHECA_COUNT_FILE=$( ls "$PATH_FILE"/proximo* 2>&- )
+
+	func_validacao
+
+}
+
+while true; do
+	func_main
+done
